@@ -17,7 +17,7 @@ class User(BaseModel):
 class InvoiceItem(BaseModel):
     line_no: int = Field(description="Line number")
     description: str = Field(description="Item description")
-    quantity: int = Field(description="Quantity")
+    quantity: int = Field(description="Quantity or Qty")
     net_price: float = Field(description="Net price")
     net_worth: float = Field(description="Net worth")
     vat: float = Field(description="VAT")
@@ -25,15 +25,15 @@ class InvoiceItem(BaseModel):
 
 class Invoice(BaseModel):
     invoice_number: str = Field(description="Unique invoice number")
-    issue_date: datetime = Field(description="Invoice issue date format YYYY-MM-DD")
+    issue_date: str = Field(description="Invoice date of issue format MM/DD/YYYY")
     seller: User = Field(description="Seller user")
     client: User = Field(description="Client user")
     currency: str = Field(description="Currency")
-    net_worth: float = Field(description="Net worth")
-    vat_total: float = Field(description="VAT total")
-    gross_worth: float = Field(description="Gross worth")
+    net_worth: float = Field(description="Summary Net worth")
+    vat_total: float = Field(description="Summary VAT total")
+    gross_worth: float = Field(description="Summary Gross worth")
     pdf_path: str = Field(description="PDF file path")
-    extracted_at: datetime = Field(description="Extraction datetime")
+    extracted_at: str = Field(description="Extraction datetime")
     invoice_items: list[InvoiceItem] = Field(description="List of invoice items")
 
 prompt = PromptTemplate.from_template(
@@ -52,7 +52,7 @@ prompt = PromptTemplate.from_template(
     Return the data in JSON format matching the Invoice schema.
     """
 ).partial(extracted_at=datetime.now().isoformat())
-llm = ChatOllama(model="qwen2.5:7b", temperature=0).with_structured_output(Invoice)
+llm = ChatOllama(model="qwen2.5:3b", temperature=0).with_structured_output(Invoice)
 # llm = ChatOpenAI(temperature=0).with_structured_output(Invoice)
 
 extraction_chain = prompt | llm
