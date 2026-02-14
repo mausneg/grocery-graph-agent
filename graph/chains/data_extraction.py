@@ -37,7 +37,9 @@ class Invoice(BaseModel):
     invoice_items: list[InvoiceItem] = Field(description="List of invoice items")
 
 prompt = PromptTemplate.from_template(
-    """Extract the invoice data from the following PDF page content.
+    """
+    Extract the invoice data from the following PDF page content.
+    If there are errors report, you need to pay attention to fixing them.
 
     Page Content:
     {page_content}
@@ -48,11 +50,13 @@ prompt = PromptTemplate.from_template(
     Current datetime:
     {extracted_at}
     
-        
+    Errors:
+    {summarize}
+    
     Return the data in JSON format matching the Invoice schema.
     """
 ).partial(extracted_at=datetime.now().isoformat())
-llm = ChatOllama(model="qwen2.5:3b", temperature=0).with_structured_output(Invoice)
+llm = ChatOllama(model="qwen2.5:7b", temperature=0).with_structured_output(Invoice)
 # llm = ChatOpenAI(temperature=0).with_structured_output(Invoice)
 
 extraction_chain = prompt | llm
