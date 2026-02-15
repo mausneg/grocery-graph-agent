@@ -1,4 +1,8 @@
+from dotenv import load_dotenv
+
 from graph.graph import graph
+
+load_dotenv()
 
 def main():
     print("Hello from invoice-graph-agent!")

@@ -9,3 +9,4 @@ class GraphState(TypedDict):
     document: Document
     is_valid: bool
     summarize: Summarize
+    sucess: bool

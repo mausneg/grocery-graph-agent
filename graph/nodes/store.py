@@ -14,6 +14,7 @@ PORT = os.getenv("MYSQL_PORT")
 DB_NAME = os.getenv("MYSQL_DATABASE")
 
 def insert_data(state: GraphState):
+    print("Inserting data into database...")
     invoice = state["invoice"]
 
     db = SQLDatabase.from_uri(f"mysql+pymysql://{USER}:{PASSWORD}@127.0.0.1:{PORT}/{DB_NAME}?charset=utf8mb4")
@@ -106,5 +107,5 @@ def insert_data(state: GraphState):
 
     except Exception as e:
         print(f"Error inserting data: {e}")
-        return False
-    return True
+        return {"success": False}
+    return {"success": True}
