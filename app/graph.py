@@ -5,7 +5,7 @@ from app.conts import LOADER, EXTRACTOR, VALIDATOR, STORE
 from app.state import InvoiceState
 from app.nodes.loader import load_data
 from app.nodes.extractor import extraction
-from app.nodes.validator import validation
+from app.nodes.validator_data import validation
 from app.nodes.store import insert_data
 
 load_dotenv()
