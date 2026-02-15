@@ -9,11 +9,13 @@ class InvoiceState(TypedDict):
     document: Document
     is_valid: bool
     summarize: Summarize
-    sucess: bool
+    success: bool
 
 class SQLState(TypedDict):
     question: str
     schema: str
     query: str
     error_message: str
+    is_dangerous: bool
     result: str
+    answer: str

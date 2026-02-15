@@ -1,4 +1,11 @@
 LOADER = "loader"
 EXTRACTOR = "extractor"
-VALIDATOR = "validator"
+VALIDATOR_DATA = "VALIDATOR_DATA"
 STORE = "store"
+
+SCHEMA = "schema"
+GENERATOR_QUERY = "generator_query"
+VALIDATOR_QUERY = "validator_query"
+EXECUTOR = "executor"
+REPAIR = "repair"
+GENERATOR_ANSWER = "generator_answer"

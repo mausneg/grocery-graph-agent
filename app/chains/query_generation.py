@@ -8,23 +8,22 @@ load_dotenv()
 class QueryGenerated(BaseModel):
     query: str = Field(description="The generated SQL query, only SELECT statements are allowed")
     
-llm = ChatOllama(model="qwen2.5:3b", temperature=0).with_structured_output(QueryGenerated)
+llm = ChatOllama(model="qwen3:4b").with_structured_output(QueryGenerated)
 prompt = PromptTemplate.from_template(
     """
-    Based on this databse schema:
-    {schema}
-
-    Generate a SQL query to answer this question: {question}
-
+    You are a helpful assistant that generates MySQL queries based on a given database schema and a question.
     Rules:
     - Use only SELECT statements
     - Include only exiting columns and tables
     - Add appropriate WHERE, GROUP BY, ORDER BY clauses as needed
     - Limit results to 10 rows unless specified otherwisem
-    - Use proper SQL syntax for SQLite
 
-    Return only the SQL query, nothing else. 
+    Database Schema:
+    {schema}
+
+    Question:
+    {question}
     """
 )
 
-generation_chain = prompt | llm
+query_chain = prompt | llm

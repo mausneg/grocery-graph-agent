@@ -9,7 +9,7 @@ def validate_query(state: SQLState):
     
     query = re.sub(r"```(?:sql)?\s*|\s*```", "", query, flags=re.IGNORECASE).strip()
     if any(keyword in query.lower() for keyword in dangerous_keywords):
-        return {"error_message": "The query contains potentially dangerous operations. Only SELECT statements are allowed."}
+        return {"result": "The query contains potentially dangerous operations. Only SELECT statements are allowed.", "is_dangerous": True}
     if not query.lower().startswith("select"):
-        return {"error_message": "Only SELECT statements are allowed."}
-    return {"error_message": ""}
+        return {"result": "Only SELECT statements are allowed.", "is_dangerous": True}
+    return {"is_dangerous": False}

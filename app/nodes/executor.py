@@ -17,4 +17,4 @@ def execution_query(state: SQLState):
         else:
             return {"result": "Query executed successfully, but no results returned."}
     except Exception as e:
-        return {"error_message": state.get("error_message", "") + e}
+        return {"error_message": str(e)}

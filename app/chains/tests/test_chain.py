@@ -4,8 +4,9 @@ from pprint import pprint
 
 from app.chains.data_extraction import extraction_chain, Invoice
 from app.chains.data_validation import validation_chain, DataValidation
-from app.chains.query_generation import generation_chain, QueryGenerated
+from app.chains.query_generation import query_chain, QueryGenerated
 from app.chains.query_fix import query_fix_chain, QueryFixedGeneration
+from app.chains.anwser_generation import anwser_chain, AnswerGeneration
 from app.database import db
 
 load_dotenv()
@@ -54,9 +55,9 @@ def test_validation_answer_false()-> None:
 
 def test_query_generation()-> None:
      schema = db.get_table_info()
-     question = "give me sum net worth at 2020"
+     question = "What is the total net worth in 2020?"
      
-     result: QueryGenerated = generation_chain.invoke({
+     result: QueryGenerated = query_chain.invoke({
           "schema": schema,
           "question": question
      })
@@ -64,14 +65,13 @@ def test_query_generation()-> None:
      print(result.query)
      assert result.query.strip().upper().startswith("SELECT")
 
-def test_query_generation_with_fix()-> None:
+def test_query_fix_generation()-> None:
      schema = db.get_table_info()
-     question = "give me sum net worth at 2020"
-     wrong_query = "INSERT INTO financials (year, net_worth) VALUES (2020, 1000000);"
-     error_message = "Only SELECT statements are allowed."
+     question = "What is the total net worth in 2020?"
+     wrong_query = "SELECT SUM(net_worth) AS total_net_worth FROM invoices WHERE strftime('%Y', extracted_at) = '2020' GROUP BY strftime('%Y', extracted_at) LIMIT 10"
+     error_message = "FUNCTION grocery_agent_db.strftime does not exist"
 
      result: QueryFixedGeneration = query_fix_chain.invoke({
-          "schema": schema,
           "question": question,
           "error_message": error_message,
           "query": wrong_query
@@ -79,3 +79,17 @@ def test_query_generation_with_fix()-> None:
 
      print(result.fixed_query)
      assert result.fixed_query.strip().upper().startswith("SELECT")
+
+def test_answer_generation()-> None:
+     question = "What is the total net worth in 2020?"
+     query = "SELECT SUM(net_worth) AS total_net_worth FROM invoices WHERE YEAR(issue_date) = 2020 GROUP BY YEAR(issue_date) LIMIT 10"
+
+     query_result = db.run(query)
+     print(query_result)
+
+     result: AnswerGeneration = anwser_chain.invoke({
+          "question": question,
+          "query_result": query_result
+     })
+
+     print(result.answer)
