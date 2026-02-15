@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 
-from graph.graph import graph
+from app.graph import graph
 
 load_dotenv()
 

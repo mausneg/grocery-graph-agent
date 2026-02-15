@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyMuPDFLoader
 
-from graph.chains.data_extraction import extraction_chain, Invoice
-from graph.nodes.store import insert_data
+from app.chains.data_extraction import extraction_chain, Invoice
+from app.nodes.store import insert_data
 
 load_dotenv()
 

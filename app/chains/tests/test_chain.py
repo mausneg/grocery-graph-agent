@@ -2,8 +2,10 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from dotenv import load_dotenv
 from pprint import pprint
 
-from graph.chains.data_extraction import extraction_chain, Invoice
-from graph.chains.data_validation import validation_chain, DataValidation
+from app.chains.data_extraction import extraction_chain, Invoice
+from app.chains.data_validation import validation_chain, DataValidation
+from app.chains.query_generation import generation_chain, GenerationOutput
+from app.database import db
 
 load_dotenv()
 
@@ -48,3 +50,16 @@ def test_validation_answer_false()-> None:
      data_validation: DataValidation = validation_chain.invoke(invoice)
      
      assert data_validation.is_valid == False
+
+def test_query_generation_select()-> None:
+     schema = db.get_table_info()
+     question = "give me sum net worth at 2020"
+     
+     result: GenerationOutput = generation_chain.invoke({
+          "schema": schema,
+          "question": question
+     })
+
+     print(result.query)
+     assert result.query.strip().upper().startswith("SELECT")
+     

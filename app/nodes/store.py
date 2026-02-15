@@ -4,20 +4,14 @@ import os
 from sqlalchemy import text
 from uuid import uuid4
 
-from graph.state import GraphState
+from app.state import InvoiceState
+from app.database import db
 
 load_dotenv()
 
-USER = os.getenv("MYSQL_USER")
-PASSWORD = os.getenv("MYSQL_PASSWORD")
-PORT = os.getenv("MYSQL_PORT")
-DB_NAME = os.getenv("MYSQL_DATABASE")
-
-def insert_data(state: GraphState):
+def insert_data(state: InvoiceState):
     print("Inserting data into database...")
     invoice = state["invoice"]
-
-    db = SQLDatabase.from_uri(f"mysql+pymysql://{USER}:{PASSWORD}@127.0.0.1:{PORT}/{DB_NAME}?charset=utf8mb4")
 
     try:
         tables = db.get_usable_table_names()

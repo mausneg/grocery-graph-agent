@@ -7,7 +7,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 from pprint import pprint
 
-from graph.chains.data_extraction import Invoice
+from app.chains.data_extraction import Invoice
 
 load_dotenv()
 

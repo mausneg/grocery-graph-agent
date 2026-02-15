@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 
-from graph.state import GraphState
-from graph.chains.data_validation import validation_chain
+from app.state import InvoiceState
+from app.chains.data_validation import validation_chain
 
-def validation(state: GraphState):
+def validation(state: InvoiceState):
     print("Validating invoice data...")
     invoice = state["invoice"]
     validation_result = validation_chain.invoke(invoice)
