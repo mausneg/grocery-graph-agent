@@ -10,12 +10,13 @@ class AnswerGeneration(BaseModel):
 
 prompt = PromptTemplate.from_template(
     """
-    You are a helpful assistant that generates an answer to the user's question based on the query result and the question.
+    You are a helpful assistant that generates an answer to the non-technical user's question based on the query result and the question
+    If the query result contains a dangerous message or warning, give answer  with a short polite apology and a reason for non-technical users.
 
     Question: {question}
     Query Result: {query_result}
     """
 )
-llm = ChatOllama(model="qwen2.5:7b", temperature=0).with_structured_output(AnswerGeneration)
+llm = ChatOllama(model="qwen2.5:7b").with_structured_output(AnswerGeneration)
 
 anwser_chain = prompt | llm

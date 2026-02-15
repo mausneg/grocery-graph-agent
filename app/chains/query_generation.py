@@ -6,14 +6,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class QueryGenerated(BaseModel):
-    query: str = Field(description="The generated SQL query, only SELECT statements are allowed")
+    query: str = Field(description="The generated SQL query")
     
 llm = ChatOllama(model="qwen3:4b").with_structured_output(QueryGenerated)
 prompt = PromptTemplate.from_template(
     """
     You are a helpful assistant that generates MySQL queries based on a given database schema and a question.
     Rules:
-    - Use only SELECT statements
     - Include only exiting columns and tables
     - Add appropriate WHERE, GROUP BY, ORDER BY clauses as needed
     - Limit results to 10 rows unless specified otherwisem

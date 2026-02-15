@@ -6,6 +6,7 @@ from app.state import SQLState
 load_dotenv()
 
 def generate_query(state: SQLState):
+    print("Generating SQL query based on the question and schema...")
     schema = state["schema"]
     question = state["question"]
 

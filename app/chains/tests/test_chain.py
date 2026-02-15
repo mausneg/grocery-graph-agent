@@ -66,7 +66,6 @@ def test_query_generation()-> None:
      assert result.query.strip().upper().startswith("SELECT")
 
 def test_query_fix_generation()-> None:
-     schema = db.get_table_info()
      question = "What is the total net worth in 2020?"
      wrong_query = "SELECT SUM(net_worth) AS total_net_worth FROM invoices WHERE strftime('%Y', extracted_at) = '2020' GROUP BY strftime('%Y', extracted_at) LIMIT 10"
      error_message = "FUNCTION grocery_agent_db.strftime does not exist"

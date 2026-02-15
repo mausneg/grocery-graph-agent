@@ -7,6 +7,7 @@ from app.state import SQLState
 load_dotenv()
 
 def execution_query(state: SQLState):
+    print("Executing query...")
     query = state["query"]
     query = re.sub(r"```(?:sql)?\s*|\s*```|;", '', query, flags=re.IGNORECASE).strip()
     

@@ -5,5 +5,6 @@ from app.state import SQLState
 from app.database import db
 
 def get_schema(state: SQLState):
+    print("Getting schema information from the database...")
     schema = db.get_table_info()
     return {"schema": schema}
