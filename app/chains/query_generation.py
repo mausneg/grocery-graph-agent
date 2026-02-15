@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-class GenerationOutput(BaseModel):
+class QueryGenerated(BaseModel):
     query: str = Field(description="The generated SQL query, only SELECT statements are allowed")
     
-llm = ChatOllama(model="qwen2.5:3b", temperature=0).with_structured_output(GenerationOutput)
+llm = ChatOllama(model="qwen2.5:3b", temperature=0).with_structured_output(QueryGenerated)
 prompt = PromptTemplate.from_template(
     """
     Based on this databse schema:

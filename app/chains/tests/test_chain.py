@@ -4,7 +4,8 @@ from pprint import pprint
 
 from app.chains.data_extraction import extraction_chain, Invoice
 from app.chains.data_validation import validation_chain, DataValidation
-from app.chains.query_generation import generation_chain, GenerationOutput
+from app.chains.query_generation import generation_chain, QueryGenerated
+from app.chains.query_fix import query_fix_chain, QueryFixedGeneration
 from app.database import db
 
 load_dotenv()
@@ -51,15 +52,30 @@ def test_validation_answer_false()-> None:
      
      assert data_validation.is_valid == False
 
-def test_query_generation_select()-> None:
+def test_query_generation()-> None:
      schema = db.get_table_info()
      question = "give me sum net worth at 2020"
      
-     result: GenerationOutput = generation_chain.invoke({
+     result: QueryGenerated = generation_chain.invoke({
           "schema": schema,
           "question": question
      })
 
      print(result.query)
      assert result.query.strip().upper().startswith("SELECT")
-     
+
+def test_query_generation_with_fix()-> None:
+     schema = db.get_table_info()
+     question = "give me sum net worth at 2020"
+     wrong_query = "INSERT INTO financials (year, net_worth) VALUES (2020, 1000000);"
+     error_message = "Only SELECT statements are allowed."
+
+     result: QueryFixedGeneration = query_fix_chain.invoke({
+          "schema": schema,
+          "question": question,
+          "error_message": error_message,
+          "query": wrong_query
+     })
+
+     print(result.fixed_query)
+     assert result.fixed_query.strip().upper().startswith("SELECT")

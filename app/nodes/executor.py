@@ -8,7 +8,7 @@ load_dotenv()
 
 def execution_query(state: SQLState):
     query = state["query"]
-    query = re.sub(r'```(?:sql)?\s*|\s*```|;', '', query, flags=re.IGNORECASE).strip()
+    query = re.sub(r"```(?:sql)?\s*|\s*```|;", '', query, flags=re.IGNORECASE).strip()
     
     try:
         result = db.run(query)
