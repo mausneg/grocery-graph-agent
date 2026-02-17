@@ -1,6 +1,6 @@
 LOADER = "loader"
 EXTRACTOR = "extractor"
-VALIDATOR_DATA = "VALIDATOR_DATA"
+VALIDATOR_DATA = "validator_data"
 STORE = "store"
 
 SCHEMA = "schema"
