@@ -2,6 +2,8 @@ from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+import os
+
 
 load_dotenv()
 
@@ -17,6 +19,6 @@ prompt = PromptTemplate.from_template(
     Query Result: {query_result}
     """
 )
-llm = ChatOllama(model="qwen2.5:7b").with_structured_output(AnswerGeneration)
+llm = ChatOllama(base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),model="qwen2.5:7b").with_structured_output(AnswerGeneration)
 
 anwser_chain = prompt | llm

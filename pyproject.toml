@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "cryptography>=46.0.5",
+    "fastapi>=0.129.0",
     "langchain>=1.2.9",
     "langchain-community>=0.4.1",
     "langchain-ollama>=1.0.1",
@@ -17,4 +18,5 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "sqlalchemy>=2.0.46",
     "streamlit>=1.54.0",
+    "uvicorn[standard]>=0.41.0",
 ]

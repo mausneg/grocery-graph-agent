@@ -1,10 +1,10 @@
 from typing import Optional
 from langchain_ollama import ChatOllama
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from datetime import datetime
+import os
 
 load_dotenv()
 
@@ -56,7 +56,6 @@ prompt = PromptTemplate.from_template(
     Return the data in JSON format matching the Invoice schema.
     """
 ).partial(extracted_at=datetime.now().isoformat())
-llm = ChatOllama(model="qwen2.5:7b", temperature=0).with_structured_output(Invoice)
-# llm = ChatOpenAI(temperature=0).with_structured_output(Invoice)
+llm = ChatOllama(base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),model="qwen2.5:7b", temperature=0).with_structured_output(Invoice)
 
 extraction_chain = prompt | llm

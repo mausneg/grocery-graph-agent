@@ -24,6 +24,45 @@ services:
       interval: 10s
       start_period: 40s
 
+  graph_agent:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    container_name: grocery_graph_agent
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${GRAPH_AGENT_PORT}:5005"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - backend
+
+  streamlit_app:
+    build: 
+      context: .
+      dockerfile: views/Dockerfile
+    container_name: grocery_streamlit_app
+    restart: always
+    env_file:
+        - .env
+    ports:
+        - "${STREAMLIT_PORT}:8501"
+    depends_on:
+      graph_agent:
+        condition: service_healthy
+    networks:
+        - backend
+
 volumes:
   mysql_data:
 

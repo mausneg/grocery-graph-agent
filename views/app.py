@@ -1,13 +1,8 @@
-from __future__ import annotations
-
 from datetime import datetime
 from pathlib import Path
 import re
-
 import streamlit as st
-
-from app.graph_data import graph_data
-from app.graph_query import graph_query
+import requests
 
 
 APP_TITLE = "Invoice Assistant"
@@ -174,7 +169,10 @@ def main() -> None:
 			try:
 				saved_path = _save_upload(uploaded)
 				with st.spinner("Memproses invoice..."):
-					final_state = graph_data.invoke({"data_path": str(saved_path)})
+					final_state = requests.post(
+						"http://localhost:8000/ingest", 
+						json={"data_path": str(saved_path)}
+						).json()
 
 				st.session_state["last_ingest_state"] = final_state
 				st.session_state["last_pdf_path"] = str(saved_path)
@@ -222,7 +220,10 @@ def main() -> None:
 		with st.chat_message("assistant"):
 			try:
 				with st.spinner("Working..."):
-					final_state = graph_query.invoke({"question": user_text.strip()})
+					final_state = requests.post(
+						"http://localhost:8000/query", 
+						json={"query": user_text}
+						).json()
 				st.session_state["last_query_state"] = final_state
 
 				raw_answer = final_state.get("answer")

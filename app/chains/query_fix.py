@@ -2,6 +2,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
@@ -22,6 +23,6 @@ prompt = PromptTemplate.from_template(
     4. Follows MySQL syntax and best practices
     """
 )
-llm = ChatOllama(model="qwen3:4b").with_structured_output(QueryFixedGeneration)
+llm = ChatOllama(base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),model="qwen3:4b").with_structured_output(QueryFixedGeneration)
 
 query_fix_chain = prompt | llm

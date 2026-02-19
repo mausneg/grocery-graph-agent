@@ -1,0 +1,13 @@
+cryptography>=46.0.5
+fastapi>=0.129.0
+langchain>=1.2.9
+langchain-community>=0.4.1
+langchain-ollama>=1.0.1
+langchain-openai>=1.1.7
+langgraph>=1.0.8
+pymupdf>=1.26.7
+pymysql[rsa]>=1.1.2
+pytest>=9.0.2
+python-dotenv>=1.2.1
+sqlalchemy>=2.0.46
+uvicorn[standard]>=0.41.0

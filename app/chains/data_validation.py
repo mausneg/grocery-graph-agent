@@ -6,6 +6,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 from pprint import pprint
+import os
 
 from app.chains.data_extraction import Invoice
 
@@ -89,7 +90,7 @@ prompt = PromptTemplate.from_template(
     {reports}
     """
 )
-llm = ChatOllama(model="qwen3:4b", temperature=0).with_structured_output(DataValidation)
+llm = ChatOllama(base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),model="qwen3:4b", temperature=0).with_structured_output(DataValidation)
 
 validation_chain = (
     {
